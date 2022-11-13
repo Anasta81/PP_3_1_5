@@ -10,9 +10,10 @@ public interface UserService {
 
     List<User> findAll();
 
-    void saveUser(User user);
+    void saveUser(User user, String[] role);
 
     void delete(Long id);
 
-    void update(User user, Long id);
+    void update(User user, Long id, String[] role);
+
 }
