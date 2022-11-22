@@ -40,8 +40,23 @@ public class RestController {
     }
 
     @PostMapping(value = "/new", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> addUser(@RequestBody User user, @PathVariable("role") String[] role){
+    public ResponseEntity<User> addUser(@ModelAttribute("user") User user, @RequestParam("role") String[] role){
         userService.saveUser(user, role);
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/delete/{id}",method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id){
+        if (userService.findById(id) == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        userService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK); }
+
+    @PutMapping(value = "/update/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> updateUser(@ModelAttribute("user") User user, @PathVariable("id") Long id,
+                                           @RequestParam(name = "role", required = false) String[] role) {
+        if (userService.findById(id) == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        userService.update(user, id, role);
+        return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
+    }
+
 }
