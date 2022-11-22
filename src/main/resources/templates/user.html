@@ -7,46 +7,59 @@
     <title></title>
 </head>
 <body>
-
-<nav class="navbar navbar-expand-xl navbar-dark bg-dark">
+<header class="p-3 bg-dark text-white">
     <div class="container-fluid">
-        <p class="navbar-brand" th:utext="${user.getUsername()}"></p>
-        <p class="navbar-brand"> with roles:</p>
-        <p class="navbar-brand" th:each="role : ${user.getRoles()}" th:text="${role.getAuthority()}"></p>
-        <div class="collapse navbar-collapse show text-right" id="navbarDark">
-            <ul class="navbar-nav me-auto mb-2 mb-xl-0">
+        <div class="d-flex align-items-center">
+            <div class="me-auto">
+                <span th:utext="${user.getUsername()}" class="font-weight-bold"></span>
+                <span> with roles:</span>
+                <span th:each="role : ${user.getRoles()}" th:text="${role.getAuthority()}" class="mx-1"></span>
+            </div>
+            <a class="nav-link"  href="/logout">Logout</a>
+        </div>
+    </div>
+</header>
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col-md-3 col-xl-2 py-2">
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item" th:if="${user.getRoles().get(0).getAuthority() == 'ROLE_ADMIN'}">
+                    <a href="/admin" class="nav-link" aria-current="page">Admin</a>
+                </li>
                 <li class="nav-item">
-                    <a class="nav-link"  href="/logout">Logout</a>
+                    <a href="/user" class="nav-link active" aria-current="page">User</a>
                 </li>
             </ul>
         </div>
+        <div class="col">
+            <h1>User information-page</h1>
+            <div>
+                <div class="col-xxl-4 py-2 bg-light border">
+                    <h5 class="mx-3">About user</h5>
+                </div>
+                <table class="table border">
+                    <thead>
+                    <tr class="table-light">
+                        <th scope="col">Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Ability</th>
+                        <th scope="col">Alias</th>
+                        <th scope="col">Username</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="table-secondary">
+                        <td th:utext="${user.getName()}"></td>
+                        <td th:utext="${user.getLastName()}"></td>
+                        <td th:utext="${user.getAbility()}"></td>
+                        <td th:utext="${user.getAlias()}"></td>
+                        <td th:utext="${user.getUsername()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-</nav>
-<h2>User information-page</h2>
-<div>
-    <table class="table caption-top">
-        <caption>About user</caption>
-        <thead>
-            <tr class="table-light">
-                <th scope="col">Name</th>
-                <th scope="col">Last Name</th>
-                <th scope="col">Ability</th>
-                <th scope="col">Alias</th>
-                <th scope="col">Username</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="table-secondary">
-                <td th:utext="${user.getName()}"></td>
-                <td th:utext="${user.getLastName()}"></td>
-                <td th:utext="${user.getAbility()}"></td>
-                <td th:utext="${user.getAlias()}"></td>
-                <td th:utext="${user.getUsername()}"></td>
-            </tr>
-        </tbody>
-    </table>
-    <br>
-    <input type="button" value="I'm an admin" onclick="window.location.href = '/admin'">
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 </body>

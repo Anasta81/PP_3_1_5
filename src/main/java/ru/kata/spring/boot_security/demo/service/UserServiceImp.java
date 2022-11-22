@@ -13,6 +13,7 @@ import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -88,8 +89,8 @@ public class UserServiceImp implements UserService {
         updateUser.setUsername(user.getUsername());
         updateUser.setRoles(user.getRoles());
 
-        if (user.getPassword() != null) {
-            updateUser.setPassword(user.getPassword());
+        if (Objects.nonNull(user.getPassword()) && user.getPassword().length() > 0) {
+            updateUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         }
 
         userRepository.saveAndFlush(updateUser);
